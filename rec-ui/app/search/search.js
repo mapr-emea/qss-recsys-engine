@@ -47,7 +47,6 @@ angular.module('myApp.search', ['ngRoute', 'elasticsearch'])
 
         $scope.testSearchId = function (item) {
             console.log("fetching item: " + item);
-            /*
             $scope.searchResponse2 = null;
 //TODO: replace full text search with filter to do exact match on _id
             client.search({
@@ -70,6 +69,6 @@ angular.module('myApp.search', ['ngRoute', 'elasticsearch'])
             }, function (err) {
                 console.trace(err.message);
             });
-            */
+
         };
 });

@@ -23,16 +23,16 @@
 
     <header>
       <h3>Title: {{item._source.title}}, Year: {{item._source.year}},
-      Total Recs: {{item._source.recs.length}} </h3>
+      Total Recs: {{item._source.indicators.length}} </h3>
       <div>
-        <h4>Recs: </h4>
+        <h4>Indicators: </h4>
       </div>
     </header>
 
-      <article ng-repeat="recs in item._source.recs">
+      <article ng-repeat="id in item._source.indicators">
         <header></header>
-          {{recs.item}}
-          <div style="display: none"> {{testSearchId(recs.item)}}</div>
+          {{id}}
+       <!--  <div style="display: none"> {{testSearchId(id)}}</div> -->
         <footer></footer>
       </article>
 
