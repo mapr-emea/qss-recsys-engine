@@ -1,0 +1,51 @@
+<section>
+  <!--
+  <div class="row" ng-init="friends = [
+    {name:'Marco', info:'fooo'},
+    {name:'Stitch', info: 'sfasfas'}
+    ]">
+    <div class="large-6 columns">
+      <div class="section-container tabs" data-section>
+
+        <section class="section">
+          <h5 class="title"><a href="#panel2">Random Items</a></h5>
+
+          <div class="content" data-slug="panel2">
+            <ul class="large-block-grid-5">
+              <li ng-repeat="friend in friends"><a href="http://www.ucla.edu"><img
+                  src="img/person.gif">{{friend.info}}
+              </a></li>
+
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+    -->
+   <div class="row collapse">
+      <div class="large-6 columns">
+        <div class="section-container tabs" data-section>
+          <section class="section">
+            <div class="content" data-slug="panel3">
+              <form class="ng-pristine ng-valid">
+                <label>Settings:</label>
+                <input id="dither" type="checkbox"><label for="dither">Dithering</label>
+                <input id="flood" type="checkbox"><label for="flood">Multi-flood limits </label>
+
+                <label>Maximum Records</label>
+                <input type="text" placeholder="20">
+
+                <label>Minimum Relevance Score</label>
+                <input type="text" placeholder="0.7">
+
+
+                <button type="submit" class="small round button">Recommend</button>
+                <button type="submit" class="small round button">Start Over</button>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

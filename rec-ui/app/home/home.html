@@ -1,0 +1,23 @@
+<section class="section" id="search-content">
+  <div class="row">
+    <input type="text" ng-model="searchTerm" class="search-query" placeholder="Search Movie Titles" ng-change="es_search()">
+    <h3>{{searchTerm2}}</h3>
+  </div>
+</section>
+<section>
+    <div class="large-12 columns">
+      <div class="section-container tabs" data-section>
+        <section class="section" ng-init="es_search()">
+          <div class="content" data-slug="panel2">
+            <ul class="large-block-grid-10">
+              <li ng-repeat=" item in searchResponse.hits.hits">
+                <a href={{item._source.url}}><img src="img/movie-example.jpg"></a>
+              <h6>{{item._source.title}}, {{item._source.year}}, {{item._score}}</h6>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,14 @@
+<h3> ElasticSearch Information</h3>
+
+<!-- if there is an error, display its message -->
+<div ng-if="error" class="alert alert-danger" role="alert">{{error.message}}</div>
+
+<!-- if clusterState is available, display it as formatted json -->
+<div ng-if="clusterState" class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Cluster State</h3>
+  </div>
+  <div class="panel-body">
+    <pre>{{clusterState | json}}</pre>
+  </div>
+</div>
