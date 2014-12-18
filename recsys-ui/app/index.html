@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>RecSys UI</title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/css/normalize.css" />
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css" />
+  <link rel="stylesheet" href="bootstrap.min.css" />
+  <link rel="stylesheet" href="bower_components/ngtoast/dist/ngToast.min.css" />
+  <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
+  <style>
+  .navbar {
+    border-radius: 0px;
+    background-color: #C60C30;
+  }
+  #results span.title {
+    font-weight: bold;
+  }
+  body {
+    background: url(bg.png)
+  }
+
+  .header_image {
+    height: 20px;
+  }
+  .ng-toast {
+    margin-top: 70px;
+  }
+  </style>
+</head>
+
+<body ng-controller="AppCtrl">
+  <toast></toast>
+  <div class="navbar">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="navbar-header">
+            <form class="navbar-form navbar-left">
+              <input type="text" class="form-control col-lg-8" placeholder="Search" style="width:535px" 
+              ng-model="data.search" ng-model-options="{ updateOn: 'default blur', debounce: { default: 500, blur: 0 } }" />
+            </form>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="" ng-click="changeUser()">User {{data.user_id}}</a></li>
+            <li><a href="" ng-click="forget()">Forget</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>  
+
+  <!-- content -->
+  <div class="wrap">
+  <div class="container" ng-view>
+
+  </div>
+  </div>
+
+  <div id="footer">
+    <div class="container">
+      <p>RecSys v0.1 – example provided by <a href="http://www.mapr.com/">MapR <img src="logo-01.png" alt="Home" class="header_image" /></a></p>
+    </div>
+  </div>
+  
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.min.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/underscore/underscore-min.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="bower_components/ngtoast/dist/ngToast.min.js"></script>
+  <script src="app.js"></script>
+  <script src="searchresults/searchresults.js"></script>
+  <script src="components/filters.js"></script>
+</body>
+</html>
