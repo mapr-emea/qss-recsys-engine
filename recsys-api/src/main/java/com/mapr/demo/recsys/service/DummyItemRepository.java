@@ -4,7 +4,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.mapr.demo.recsys.model.Item;
 import org.springframework.data.domain.Pageable;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.List;
 import java.util.Map;
 
@@ -37,5 +39,10 @@ public class DummyItemRepository implements ItemRepository {
     @Override
     public List<? extends Item> getPopular(Pageable pageable) {
         return getItems(popularIds);
+    }
+
+    @Override
+    public List<? extends Item> searchByName(String name, Pageable pageable) throws OperationNotSupportedException {
+        throw new OperationNotSupportedException();
     }
 }

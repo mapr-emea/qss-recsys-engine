@@ -14,4 +14,5 @@ public interface ItemHistoryRepository {
 
     public List<String> lastItemsConsumed(String userId);
     public List<String> addItemToHistory(String userId, String itemId) throws IOException;
+    public void forget(String userId);
 }

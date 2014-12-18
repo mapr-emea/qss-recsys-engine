@@ -62,6 +62,11 @@ public class HBaseItemHistoryRepository implements ItemHistoryRepository {
         return Lists.newArrayList(); // TODO remove
     }
 
+    @Override
+    public void forget(String userId) {
+        // TODO
+    }
+
     public static void main(String[] args) throws IOException {
         HBaseItemHistoryRepository xxxx = new HBaseItemHistoryRepository();
         xxxx.addItemToHistory("1", "2");

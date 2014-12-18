@@ -1,43 +1,50 @@
 package com.mapr.demo.recsys.service;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Queues;
+import com.google.common.collect.Sets;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DummyItemHistoryRepository implements ItemHistoryRepository {
     // TODO log
 
-    final Map<String, List<String>> history;
-
-    {
-        history = new HashMap();
-        history.put("alice", Lists.newArrayList("apple", "dog", "poney"));
-        history.put("bob", Lists.newArrayList("apple", "poney"));
-        history.put("charles", Lists.newArrayList("bike", "poney"));
-    }
+    final Map<String, Set<String>> history = Maps.newHashMap();
+    final Map<String, Queue<String>> orderedHistory = Maps.newHashMap();
 
     @Override
     public List<String> lastItemsConsumed(String userId) {
-        List<String> items = history.get(userId);
-        return items == null? Lists.<String>newArrayList() : items;
+        Set<String> items = history.get(userId);
+        return items == null? Lists.<String>newArrayList() : Lists.newArrayList(items);
     }
 
     @Override
     public List<String> addItemToHistory(String userId, String itemId) {
-        List<String> ids = history.get(userId);
+        Set<String> ids = history.get(userId);
 
         if (ids == null) {
-            ids = Lists.newLinkedList();
+            ids = Sets.newHashSet();
+            history.put(userId, ids);
+            orderedHistory.put(userId, Queues.<String>newConcurrentLinkedQueue());
         }
-
-        ids.add(0, itemId);
 
         if (ids.size() > MAX_HISTORY) {
-            ids.remove(ids.size() - 1);
+            String olderId = orderedHistory.get(userId).poll();
+            ids.remove(olderId);
         }
 
-        return ids;
+        if (! ids.contains(itemId)) {
+            ids.add(itemId);
+            orderedHistory.get(userId).add(itemId);
+        }
+
+        return Lists.newArrayList(ids);
+    }
+
+    @Override
+    public void forget(String userId) {
+        history.remove(userId);
+        orderedHistory.remove(userId);
     }
 }

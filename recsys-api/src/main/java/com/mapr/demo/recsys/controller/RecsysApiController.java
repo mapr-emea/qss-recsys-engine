@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.naming.OperationNotSupportedException;
+
 @RestController
 @RequestMapping("/api")
 public class RecsysApiController {
@@ -35,7 +37,7 @@ public class RecsysApiController {
      */
     @RequestMapping("/recommendations")
     public List<? extends Item> getRecommendations(
-            @RequestParam(value="count", defaultValue="10") Integer count,
+            @RequestParam(value="count", defaultValue="8") Integer count,
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="user_id") String userId) {
 
@@ -43,10 +45,26 @@ public class RecsysApiController {
         return recommendationService.getSimilarItems(recentItemIds, new PageRequest(page, count));
     }
 
+    @RequestMapping("/recommendations/results")
+    public List<? extends Item> getSearchResultsRecommendations(
+            @RequestParam(value="count", defaultValue="5") Integer count,
+            @RequestParam(value="page", defaultValue="0") Integer page,
+            @RequestParam(value="ids") String ids) {
+
+        if (ids.trim().isEmpty()) {
+            return Lists.newArrayList();
+        }
+
+        List<String> resultPageIds = Lists.newArrayList(ids.trim().split(","));
+        return recommendationService.getSimilarItems(resultPageIds, new PageRequest(page, count));
+    }
+
+    // TODO change this to POST
     @RequestMapping("/items/{item_id}/consume")
-    public void consumeItem(@RequestParam(value="user_id") String userId,
+    public List<? extends Item> consumeItem(@RequestParam(value="user_id") String userId,
                             @PathVariable(value="item_id") String itemId) throws IOException {
-        itemHistoryRepository.addItemToHistory(userId, itemId);
+        List<String> ids =itemHistoryRepository.addItemToHistory(userId, itemId);
+        return itemRepository.getItems(ids);
     }
 
     @RequestMapping("/items/{item_id}")
@@ -67,9 +85,26 @@ public class RecsysApiController {
         return itemRepository.getPopular(new PageRequest(0, 8));
     }
 
-    @RequestMapping("/history")
+    @RequestMapping("/items/search")
+    public List<? extends Item> search(@RequestParam(value = "q") String name,
+                                       @RequestParam(value = "p", defaultValue = "0") Integer page) throws IOException {
+        try {
+            return itemRepository.searchByName(name, new PageRequest(page, 5));
+        } catch (OperationNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        return Lists.newArrayList();
+    }
+
+    @RequestMapping("/history/get")
     public List<? extends Item> getItemHistory(@RequestParam(value = "user_id") String userId) {
         List<String> ids = itemHistoryRepository.lastItemsConsumed(userId);
         return itemRepository.getItems(ids);
+    }
+
+    @RequestMapping("/history/forget")
+    public void forgetItemHistory(@RequestParam(value = "user_id") String userId) {
+        itemHistoryRepository.forget(userId);
     }
 }
