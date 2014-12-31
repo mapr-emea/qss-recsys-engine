@@ -81,7 +81,7 @@ public class RecsysApiController {
     }
 
     @RequestMapping("/items/popular")
-    public List<? extends Item> getPopular(@RequestParam(value = "user_id") String userId) throws IOException {
+    public List<? extends Item> getPopular() throws IOException {
         return itemRepository.getPopular(new PageRequest(0, 8));
     }
 

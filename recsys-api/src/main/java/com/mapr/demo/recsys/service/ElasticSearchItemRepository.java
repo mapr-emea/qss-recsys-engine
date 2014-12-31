@@ -3,6 +3,14 @@ package com.mapr.demo.recsys.service;
 import com.google.common.collect.Lists;
 import com.mapr.demo.recsys.model.FilmItem;
 import com.mapr.demo.recsys.model.Item;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.common.lucene.search.function.CombineFunction;
+import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilder;
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -19,9 +27,7 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
-import static org.elasticsearch.index.query.QueryBuilders.matchPhrasePrefixQuery;
-import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 public class ElasticSearchItemRepository implements ItemRepository {
     final static Logger log = LoggerFactory.getLogger(ElasticSearchItemRepository.class);
@@ -34,6 +40,10 @@ public class ElasticSearchItemRepository implements ItemRepository {
 
     @Value("${spring.data.elasticsearch.type-name}")
     String typeName;
+
+    @Value("${spring.data.elasticsearch.popular-threshold}")
+    Integer popularThreshold;
+
 
     @Override
     public List<? extends Item> getItems(List<String> ids) {
@@ -57,10 +67,11 @@ public class ElasticSearchItemRepository implements ItemRepository {
     public List<? extends Item> getPopular(Pageable pageable) {
         log.info("Retrieving popular items");
 
-        // change the fields you want and the model
+        FilterBuilder filterBuilder = FilterBuilders.rangeFilter("numFields").gt(popularThreshold);
+        ScoreFunctionBuilder scoreFunction = ScoreFunctionBuilders.randomFunction(System.currentTimeMillis() / 60000);
+
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(matchAllQuery())
-                .withSort(SortBuilders.fieldSort("indicators").order(SortOrder.DESC).sortMode("sum"))
+                .withQuery(functionScoreQuery(filterBuilder, scoreFunction).boostMode(CombineFunction.REPLACE))
                 .withPageable(pageable)
                 .withIndices(indexName)
                 .withTypes(typeName)
