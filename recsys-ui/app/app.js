@@ -43,7 +43,7 @@ angular.module('myApp', [
 		popularItems: [],
 		recommendedItems: []
 	};
-	$rootScope.api = 'http://localhost:8080/api/';
+	$rootScope.api = '/api/';
 
 	$rootScope.$watch("data.search", function(newValue, oldValue) {
 		if (newValue == "") {
