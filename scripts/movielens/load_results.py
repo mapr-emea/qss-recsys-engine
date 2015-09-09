@@ -1,10 +1,15 @@
 #!/usr/bin/env python2.6
 import csv
 import json
+import sys
+
+if len(sys.argv) != 2:
+    sys.stderr.write("Usage: ./load_results.py <output file from mahout MR job>")
+    sys.exit(1)
 
 ### read the output from MAHOUT and collect into hash ###
 indicators={}
-with open('output/part-r-00000','rb') as csv_file:
+with open(sys.argv[1],'rb') as csv_file:
     csv_reader = csv.reader(csv_file,delimiter='\t')
     for row in csv_reader:
       ##### film indicators ###
