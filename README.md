@@ -31,25 +31,45 @@ To deploy the whole solution in a CentOS based:
 
 1. Install ElasticSearch – [documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html)
 
+1a. Start ElasticSearch with `service elasticsearch start`.
+
+1b. Check if ES is running, by running `lsof -i :9300` as root.
+
 2. Install Apache Mahout – `yum install -y mapr-mahout`
 
 3. Clone or extract this repository into one of the nodes and set it as your current working directory `cd rec-engine`.
 
-4. Edit settings for recsys application server in `recsys-api/src/main/resources/application.properties`.
+4. Edit search engine settings for recsys application server in `recsys-api/src/main/resources/application.properties`. By default, it assumes ElasticSearch is running on localhost. Please adapt if required.
 
 5. Build UI
 
-`pushd recsys-ui && bower install; popd`
+To build the UI, bower will be used. Bower is a package manager for managing web frameworks, libraries, utilities, assets etc. 
 
-This assumes that you have bower dependency manager installed. You can get it through npm package manager.
+To install bower on CentOS, npm and nodejs will have to be installed in the first place. The following commands will install npm and bower:
+
+`yum install npm nodejs`
+
+Use npm package manager to download bower:
+`npm install bower -g`
+
+Check bower version:
+`bower -v`
+
+
+Now that bower is installed, let's build the UI using bower now:
+
+`cd recsys-ui && bower install; cd ..`
 
 
 6. Build the JAR
 
 To build the application server JAR, first you need to create a link of the static files (UI) to a special directory so they can be served by the application server as static resources (HTML, CSS and JS).
 
-`ln -s recsys-ui/app recsys-api/src/main/resources/static`
+Run the following command while in project root:
 
+`ln -s ../../../../recsys-ui/app recsys-api/src/main/resources/static`
+
+This will make sure the UI contents are available as static 
 
 `mvn clean install`
 
