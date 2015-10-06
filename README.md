@@ -124,9 +124,19 @@ The command assumes ES is running locally.
 
 `curl -s -XPOST localhost:9200/_bulk --data-binary @index.json;`
 
+4a. You can perform a HTTP request to check if the data is there:
+
+`curl http://localhost:9200/movie/film/140212`
+
 5. Import ratings data to the DFS. This will be the input for Machine Learning algorithms run by Mahout
 
-`hadoop dfs -copyFromLocal ml-latest/ratings.csv /user/mapr/`
+5a. Wipe out the first line of the ratings.csv using your favourite text editor. This is the line containing the field names of the CSV: "userId,movieId,rating,timestamp".
+
+5b. Copy the file to the distributed filesystem (this overwrites the existing one):
+
+`hadoop dfs -copyFromLocal -f ml-latest/ratings.csv /user/mapr/`
+
+5c. Check with `hadoop dfs -ls /user/mapr/ratings.csv`
 
 6. Edit the script `scripts/calculate_recommendations.sh` to make sure `MAHOUT_HOME` is well defined and run the script.
 
