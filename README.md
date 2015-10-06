@@ -80,17 +80,18 @@ Run the following command while in project root:
 
 `ln -s ../../../../recsys-ui/app recsys-api/src/main/resources/static`
 
-This will make sure the UI contents are available as static files in the webserver application (recsys-api). The recsys-api will serve both static files with Javascript and HTML content. Those will run in the browser and perform HTTP request through 
+This will make sure the UI contents are available as static files in the application server (recsys-api). The recsys-api will serve both static files and API calls, through HTTP. Static files are mainly Javascript, CSS and HTML content that compose the client-side application and they will executed in the browser. The client application will perform REST requests to the API, that will be served by the webserver application.
 
+To build the application server:
 
 `cd recsys-api && mvn clean install`
 
 
 7. Run the application server 
 
-The JAR is under `target/recsys-api-1.0-SNAPSHOT.jar` and has a main class that already boots up a Tomcat based server. Run it as follows:
+The JAR is under `recsys-api/target/recsys-api-1.0-SNAPSHOT.jar` and has a main class that already boots up a Tomcat based server. Run it as follows:
 
-`java -jar recsys-api-1.0-SNAPSHOT.jar`
+`java -jar recsys-api/target/recsys-api-1.0-SNAPSHOT.jar`
 
 The web UI will be accessible in port 8080.
 
