@@ -65,13 +65,25 @@ Now that bower is installed, let's build the UI using bower now:
 
 To build the application server JAR, first you need to create a link of the static files (UI) to a special directory so they can be served by the application server as static resources (HTML, CSS and JS).
 
+First, make sure you have Java build tools installed: Java JDK and Maven build tool.
+
+Download the YUM repository file:
+
+`wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo`
+
+Install it using yum command:
+
+`yum install apache-maven`
+
+
 Run the following command while in project root:
 
 `ln -s ../../../../recsys-ui/app recsys-api/src/main/resources/static`
 
-This will make sure the UI contents are available as static 
+This will make sure the UI contents are available as static files in the webserver application (recsys-api). The recsys-api will serve both static files with Javascript and HTML content. Those will run in the browser and perform HTTP request through 
 
-`mvn clean install`
+
+`cd recsys-api && mvn clean install`
 
 
 7. Run the application server 
