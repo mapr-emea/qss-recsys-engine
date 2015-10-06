@@ -78,6 +78,8 @@ Install it using yum command:
 
 Run the following command while in project root:
 
+`rm -rf recsys-api/src/main/resources/static`
+
 `ln -s ../../../../recsys-ui/app recsys-api/src/main/resources/static`
 
 This will make sure the UI contents are available as static files in the application server (recsys-api). The recsys-api will serve both static files and API calls, through HTTP. Static files are mainly Javascript, CSS and HTML content that compose the client-side application and they will executed in the browser. The client application will perform REST requests to the API, that will be served by the webserver application.
@@ -144,7 +146,7 @@ The command assumes ES is running locally.
 
 7. Copy the results to local filesystem
 
-hadoop dfs -copyToLocal /user/mapr/recsys_output/ output
+`hadoop dfs -copyToLocal /user/mapr/recsys_output/ output`
 
 8. Transform recommendations into ES JSON format
 
